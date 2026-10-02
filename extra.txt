@@ -1,0 +1,133 @@
+Bottom Detailed Dynamic Project Showcase Card
+        <div className="relative border border-cyber-border/80 bg-cyber-bgLight/40 backdrop-blur-md rounded-sm p-6 lg:p-10 transition-all duration-500 overflow-hidden shadow-cyan-sm">
+          {/* Futuristic Corner Brackets */}
+          <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-cyber-cyan" />
+          <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-cyber-cyan" />
+          <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-cyber-cyan" />
+          <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-cyber-cyan" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            {/* Left: Project Info & Actions (7 cols) */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-cyber-cyan tracking-widest uppercase">
+                    {selected.category}
+                  </span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-pulse" />
+                </div>
+                <h3 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-wide">
+                  {selected.title}
+                </h3>
+              </div>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2">
+                {selected.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-mono text-[10px] tracking-widest text-cyber-cyan border border-cyber-cyan/30 px-2.5 py-1 uppercase bg-cyber-cyan/5"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Description */}
+              <p className="text-cyber-textMuted text-sm leading-relaxed max-w-xl">
+                {selected.description}
+              </p>
+
+              {/* Metrics if available */}
+              {selected.metrics && (
+                <div className="grid grid-cols-3 gap-4 pt-2 border-t border-cyber-border/60">
+                  {Object.entries(selected.metrics).map(([k, v]) => (
+                    <div key={k}>
+                      <div className="font-display text-xl font-bold text-cyber-cyan">{v}</div>
+                      <div className="font-mono text-[10px] text-cyber-textDim uppercase tracking-wider">{k}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+                {/* Action Buttons */}
+               <div className="flex gap-4 flex-wrap pt-2">
+                 {selected.liveUrl && (
+                   <a
+                     href={selected.liveUrl}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     onClick={() => soundFX.playClick()}
+                     className="flex items-center gap-2 px-5 py-2.5 border border-cyber-cyan bg-cyber-cyan/15 text-cyber-cyan hover:bg-cyber-cyan hover:text-black text-xs font-mono tracking-widest uppercase transition-all group"
+                   >
+                     <div ref={useHoverEffect({ scale: 1.05, offsetX: 2, offsetY: 0, duration: 0.15 })}
+                        className="flex items-center gap-3"
+                     >
+                       <span>VIEW LIVE</span>
+                       <ExternalLink className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                     </div>
+                   </a>
+                 )}
+                 {selected.githubUrl && (
+                   <a
+                     href={selected.githubUrl}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     onClick={() => soundFX.playClick()}
+                     className="flex items-center gap-2 px-5 py-2.5 border border-cyber-border hover:border-cyber-cyan/70 text-cyber-textMuted hover:text-white text-xs font-mono tracking-widest uppercase transition-all group"
+                   >
+                     <div ref={useHoverEffect({ scale: 1.05, offsetX: 2, offsetY: 0, duration: 0.15 })}
+                        className="flex items-center gap-3"
+                     >
+                       <span>VIEW CODE</span>
+                       <Code2 className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                     </div>
+                   </a>
+                 )}
+               </div>
+            </div>
+
+            {/* Right: Dynamic Interactive Terminal / Mockup Visual (5 cols) */}
+            <div className="lg:col-span-5">
+              <div className="relative border border-cyber-border bg-cyber-bg/90 rounded-sm p-5 space-y-4 overflow-hidden">
+                <div className="flex items-center justify-between border-b border-cyber-border pb-3 font-mono text-[10px] text-cyber-textMuted">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-cyber-cyan" />
+                    <span>NODE // {selected.subtitle.toUpperCase()}</span>
+                  </div>
+                  <span className="text-cyber-cyan">ACTIVE</span>
+                </div>
+
+                <div className="space-y-2 font-mono text-xs text-cyber-textMuted">
+                  <div className="flex justify-between">
+                    <span className="text-cyber-textDim">IDENTIFIER:</span>
+                    <span className="text-white">{selected.id}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-cyber-textDim">STATUS:</span>
+                    <span className="text-cyber-cyan">DEPLOYED / PRODUCTION</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-cyber-textDim">CORE STACK:</span>
+                    <span className="text-white">{selected.tags.slice(0, 2).join(' + ')}</span>
+                  </div>
+                </div>
+
+                {/* Animated visual radar / graphic */}
+                <div className="h-32 border border-cyber-border/50 cyber-grid flex items-center justify-center relative overflow-hidden">
+                  <div className="w-20 h-20 rounded-full border border-cyber-cyan/30 flex items-center justify-center animate-ping opacity-25" />
+                  <div className="w-16 h-16 rounded-full border border-cyber-cyan/60 flex items-center justify-center animate-pulse">
+                    <span className="font-display font-bold text-2xl text-cyber-cyan">
+                      {selected.title.charAt(0)}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-2 right-2 font-mono text-[9px] text-cyber-textDim">
+                    SYS_OK
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
