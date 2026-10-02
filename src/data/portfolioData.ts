@@ -34,7 +34,7 @@ export const portfolioData: PortfolioData = {
       tags: ["AI", "COMPUTER VISION", "FASTAPI", "REACT"],
       description: "An AI-powered system to detect plant diseases from leaf images, helping farmers take faster and smarter decisions with 98.4% diagnostic accuracy.",
       liveUrl: "https://crop-health-ai.example.com",
-      githubUrl: "https://github.com/mangal/crop-health-ai",
+      githubUrl: "https://github.com/mangal1622/AgroMitR",
       featured: true,
       metrics: {
         accuracy: "98.4%",
@@ -73,15 +73,15 @@ export const portfolioData: PortfolioData = {
       ]
     },
     {
-      id: "studynotion",
+      id: "WeatherPro",
       number: "03 / 02",
-      title: "STUDYNOTION",
-      subtitle: "EdTech Platform",
+      title: "WEATHERPRO",
+      subtitle: "Weather Forecasting",
       category: "Full Stack & EdTech",
       tags: ["REACT", "NODE.JS", "EXPRESS", "MONGODB", "TAILWIND"],
       description: "A comprehensive educational marketplace connecting instructors with students worldwide, featuring interactive course players and payments.",
-      liveUrl: "https://studynotion.example.com",
-      githubUrl: "https://github.com/mangal/studynotion",
+      liveUrl: "https://weatherpro.example.com",
+      githubUrl: "https://github.com/mangal1622/WeatherPro",
       featured: true,
       metrics: {
         users: "45k+",
