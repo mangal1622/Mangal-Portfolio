@@ -103,6 +103,16 @@ html {
   scroll-behavior: auto;
 }
 
+body {
+  overflow-x: hidden;
+}
+
+img,
+svg,
+canvas {
+  max-width: 100%;
+}
+
 html.lenis,
 html.lenis body {
   height: auto;

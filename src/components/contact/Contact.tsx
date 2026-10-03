@@ -12,8 +12,8 @@ interface ContactProps {
 export const Contact: React.FC<ContactProps> = ({ onOpenModal }) => {
   useScrollReveal('.contact-reveal', {
     y: 50,
-    duration: 1,
-    stagger: 0.12,
+    duration: 0.7,
+    stagger: 0.06,
     ease: 'power3.out',
   });
   const { socials, personal } = portfolioData;
@@ -49,12 +49,12 @@ export const Contact: React.FC<ContactProps> = ({ onOpenModal }) => {
 
       {/* Ambient glow */}
       <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] opacity-20 pointer-events-none blur-3xl"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[90vw] h-[350px] sm:h-[280px] md:h-[350px] lg:h-[400px] opacity-20 pointer-events-none blur-3xl"
         style={{ background: 'radial-gradient(ellipse, rgba(0,240,255,0.45) 0%, transparent 70%)' }}
       />
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-20 items-center">
 
           {/* ── LEFT: Headline & Actions ── */}
           <div className="space-y-8">
@@ -136,27 +136,27 @@ export const Contact: React.FC<ContactProps> = ({ onOpenModal }) => {
                  onClick={() => soundFX.playClick()}
                  onMouseEnter={() => { setHoveredItem(item.id); soundFX.playHover(); }}
                  onMouseLeave={() => setHoveredItem(null)}
-                 className={`flex items-center gap-5 p-5 border transition-all duration-200 group rounded-sm ${
+                 className={`flex items-center gap-3 md:gap-5 p-4 md:p-5 border transition-all duration-200 group rounded-sm w-full min-w-0 ${
                    hoveredItem === item.id
                      ? 'border-cyber-cyan bg-cyber-cyan/10 shadow-cyan-sm translate-x-1'
                      : 'border-cyber-border/80 bg-cyber-bgLight/40 hover:border-cyber-cyan/40'
                  }`}
                >
                  <div ref={useHoverEffect({ scale: 1.03, offsetX: 2, offsetY: 0, duration: 0.1 })}
-                    className="flex items-center gap-3"
+                    className="flex min-w-0 flex-1 items-center gap-3 w-full"
                  >
-                   <div className={`p-2.5 rounded-full border transition-colors ${
+                   <div className={`shrink-0 p-2.5 rounded-full border transition-colors ${
                      hoveredItem === item.id 
                        ? 'border-cyber-cyan text-cyber-cyan bg-cyber-cyan/15' 
                        : 'border-cyber-border text-cyber-textMuted'
                    }`}>
                      {item.icon}
                    </div>
-                   <div className="min-w-0">
+                   <div className="min-w-0 flex-1">
                      <div className="font-mono text-[10px] tracking-widest text-cyber-textDim uppercase mb-1">
                        {item.label}
                      </div>
-                     <div className={`font-mono text-sm transition-colors truncate ${
+                     <div className={`font-mono text-sm transition-colors break-words whitespace-normal [overflow-wrap:anywhere] min-w-0 ${
                        hoveredItem === item.id ? 'text-cyber-cyan font-medium' : 'text-cyber-text'
                      }`}>
                        {item.value}
@@ -179,7 +179,7 @@ export const Contact: React.FC<ContactProps> = ({ onOpenModal }) => {
           <span className="font-display text-sm font-bold tracking-[0.3em] text-white">
             {personal.name}
           </span>
-          <div className="flex items-center gap-3 font-mono text-[10px] tracking-widest text-cyber-textDim">
+          <div className="flex flex-wrap items-center justify-center gap-3 font-mono text-[10px] tracking-widest text-cyber-textDim text-center">
             <span>SAME MIND</span>
             <span className="text-cyber-cyan">/</span>
             <span>HIGHER POSSIBILITIES</span>

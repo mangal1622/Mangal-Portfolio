@@ -41,6 +41,7 @@ export default {
         'spin-slow': 'spin 30s linear infinite',
         'spin-reverse': 'spin-rev 25s linear infinite',
         'scanline': 'scanline 6s linear infinite',
+        'slideDown': 'slideDown 0.2s ease-out',
       },
       keyframes: {
         'spin-rev': {
@@ -50,6 +51,10 @@ export default {
         'scanline': {
           '0%': { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(1000%)' }
+        },
+        'slideDown': {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
         }
       }
     },

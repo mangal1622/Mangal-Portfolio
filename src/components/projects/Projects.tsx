@@ -9,8 +9,8 @@ import { useScrollReveal } from '../../hooks/useScrollReveal';
 export const Projects: React.FC = () => {
   useScrollReveal('.projects-reveal', {
     y: 50,
-    duration: 1,
-    stagger: 0.12,
+    duration: 0.7,
+    stagger: 0.06,
     ease: 'power3.out',
   });
   const [selectedId, setSelectedId] = useState('crop-health-ai');
@@ -27,7 +27,7 @@ export const Projects: React.FC = () => {
     <section id="projects" className="relative py-8 lg:py-12 overflow-hidden scroll-mt-16 md:scroll-mt-20" aria-label="Projects section">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyber-border to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-6 space-y-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-10 md:space-y-16">
         {/* Top Split: Intro & Interactive Network Graph */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
@@ -103,7 +103,7 @@ export const Projects: React.FC = () => {
             />
 
             {/* Square project card */}
-            <div className="relative w-full max-w-[390px] aspect-square border border-cyber-cyan/40 bg-cyber-bgLight/50 backdrop-blur-md rounded-sm overflow-hidden shadow-cyan-sm">
+            <div className="relative w-full max-w-[min(100%,390px)] aspect-square border border-cyber-cyan/40 bg-cyber-bgLight/50 backdrop-blur-md rounded-sm overflow-hidden shadow-cyan-sm">
 
               {/* Cyber corner brackets */}
               <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyber-cyan z-10" />
@@ -115,7 +115,7 @@ export const Projects: React.FC = () => {
               <div className="absolute inset-0 cyber-grid opacity-30 pointer-events-none" />
 
               {/* Card content */}
-              <div className="relative z-10 h-full flex flex-col justify-between p-7">
+              <div className="relative z-10 h-full flex flex-col justify-between p-4 sm:p-5 md:p-7 min-w-0">
 
                 {/* Header */}
                 <div className="flex items-center justify-between">
@@ -133,15 +133,22 @@ export const Projects: React.FC = () => {
 
                   {/*Logo*/}
                   <div className="w-16 h-16 rounded-sm border border-cyber-cyan/50 bg-cyber-cyan/10 flex items-center justify-center shadow-cyan-sm overflow-hidden">
-                  <img
-                    src="/images/agromitr-logo.png"
-                    alt={`${selected.title} logo`}
-                    className="w-12 h-12 object-contain"
-                  />
-                </div>
+                    <img
+                      src={selected.image}
+                      alt={`${selected.title} logo`}
+                      className="w-12 h-12 object-contain"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                    <div className="hidden w-12 h-12 flex items-center justify-center font-mono text-[10px] text-cyber-cyan border border-cyber-cyan/30 rounded-sm">
+                      {selected.title.charAt(0)}
+                    </div>
+                  </div>
 
                   <div>
-                    <h3 className="font-display text-2xl sm:text-3xl font-bold text-white uppercase tracking-wide">
+                    <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-white uppercase tracking-wide break-words">
                       {selected.title}
                     </h3>
 
@@ -151,7 +158,7 @@ export const Projects: React.FC = () => {
                   </div>
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 min-w-0">
                     {selected.tags.slice(0, 3).map((tag) => (
                       <span
                         key={tag}

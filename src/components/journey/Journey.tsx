@@ -12,8 +12,8 @@ export const Journey: React.FC = () => {
 
   useScrollReveal('.journey-reveal', {
     y: 50,
-    duration: 1,
-    stagger: 0.12,
+    duration: 0.7,
+    stagger: 0.06,
     ease: 'power3.out',
   });
 

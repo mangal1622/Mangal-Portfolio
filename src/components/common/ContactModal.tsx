@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Send, CheckCircle2, Terminal } from 'lucide-react';
+import { X, Send, CheckCircle2, Terminal, AlertCircle } from 'lucide-react';
 import { soundFX } from '../../utils/soundEffects';
 
 
@@ -13,23 +13,87 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [category, setCategory] = useState('AI & ML Engineering');
+  const [customDomain, setCustomDomain] = useState('');
+  const [preferredDate, setPreferredDate] = useState('');
+  const [preferredTime, setPreferredTime] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const showCustomDomain = category === 'OTHER / CUSTOM DOMAIN';
+
+  const getDomainValue = (): string => {
+    if (showCustomDomain) return customDomain;
+    return category;
+  };
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const checkWeb3FormsConfig = (): string | null => {
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+
+    if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY') return 'VITE_WEB3FORMS_ACCESS_KEY';
+    return null;
+  };
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email || !message) return;
 
+    if (!name || !email || !message) return;
+    if (!validateEmail(email)) return;
+    if (showCustomDomain && !customDomain) return;
+
+    const missingConfig = checkWeb3FormsConfig();
+    if (missingConfig) {
+      setError(`Web3Forms configuration missing: ${missingConfig}. Please check your .env file.`);
+      console.error(`Web3Forms configuration missing: ${missingConfig}`);
+      return;
+    }
+
+    setError(null);
     soundFX.playScan();
     setIsSending(true);
 
-    setTimeout(() => {
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          name,
+          email,
+          domain: getDomainValue(),
+          customDomain,
+          preferredDate,
+          preferredTime,
+          message,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSending(false);
+        setSent(true);
+        soundFX.playEnter();
+      } else {
+        setIsSending(false);
+        setError('TRANSMISSION FAILED // PLEASE TRY AGAIN');
+        console.error('Web3Forms send error:', result.message);
+      }
+    } catch (err) {
       setIsSending(false);
-      setSent(true);
-      soundFX.playEnter();
-    }, 1200);
+      setError('TRANSMISSION FAILED // PLEASE TRY AGAIN');
+      console.error('Web3Forms send error:', err);
+    }
   };
 
   const handleClose = () => {
@@ -37,9 +101,14 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
     onClose();
     setTimeout(() => {
       setSent(false);
+      setError(null);
       setName('');
       setEmail('');
       setMessage('');
+      setCustomDomain('');
+      setPreferredDate('');
+      setPreferredTime('');
+      setCategory('AI & ML Engineering');
     }, 300);
   };
 
@@ -93,7 +162,17 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <>
+            {error && (
+              <div className="mb-4 p-3 bg-cyber-accentRed/10 border border-cyber-accentRed/30 rounded-sm animate-slideDown">
+                <div className="flex items-center gap-2 text-cyber-accentRed font-mono text-[10px] uppercase tracking-wider">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{error}</span>
+                </div>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-[11px] font-mono uppercase text-cyber-textMuted tracking-wider mb-1">
                 Your Identification // Name
@@ -135,7 +214,51 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                 <option value="Full-Stack Web Development">Full-Stack Web Architecture</option>
                 <option value="Creative Tech & WebGL">Creative Technology / WebGL</option>
                 <option value="Consulting / General">Collaborative Project / Advisory</option>
+                <option value="OTHER / CUSTOM DOMAIN">OTHER / CUSTOM DOMAIN</option>
               </select>
+            </div>
+
+            {showCustomDomain && (
+              <div className="animate-slideDown">
+                <label className="block text-[11px] font-mono uppercase text-cyber-textMuted tracking-wider mb-1">
+                  CUSTOM DOMAIN // SPECIFY
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={customDomain}
+                  onChange={(e) => setCustomDomain(e.target.value)}
+                  placeholder="e.g. FinTech, Healthcare, EdTech, SaaS..."
+                  className="w-full px-3 py-2 bg-cyber-bg border border-cyber-border focus:border-cyber-cyan text-sm text-white focus:outline-none transition-colors font-mono"
+                />
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[11px] font-mono uppercase text-cyber-textMuted tracking-wider mb-1">
+                  PREFERRED DATE // CONSULTATION
+                </label>
+                <input
+                  type="date"
+                  value={preferredDate}
+                  onChange={(e) => setPreferredDate(e.target.value)}
+                  min={new Date().toISOString().split('T')[0]}
+                  className="w-full px-3 py-2 bg-cyber-bg border border-cyber-border focus:border-cyber-cyan text-sm text-white focus:outline-none transition-colors font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-mono uppercase text-cyber-textMuted tracking-wider mb-1">
+                  PREFERRED TIME // CONSULTATION
+                </label>
+                <input
+                  type="time"
+                  value={preferredTime}
+                  onChange={(e) => setPreferredTime(e.target.value)}
+                  className="w-full px-3 py-2 bg-cyber-bg border border-cyber-border focus:border-cyber-cyan text-sm text-white focus:outline-none transition-colors font-mono"
+                />
+              </div>
             </div>
 
             <div>
@@ -156,13 +279,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
               <button
                 type="submit"
                 disabled={isSending}
-                className="w-full py-2.5 px-4 bg-cyber-cyan/15 hover:bg-cyber-cyan text-cyber-cyan hover:text-black border border-cyber-cyan font-mono text-xs uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 group"
+                className="w-full py-2.5 px-4 bg-cyber-cyan/15 hover:bg-cyber-cyan text-cyber-cyan hover:text-black border border-cyber-cyan font-mono text-xs uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="flex items-center justify-center gap-2">
                   {isSending ? (
                     <>
                       <span className="inline-block w-3 h-3 border-2 border-cyber-cyan border-t-transparent rounded-full animate-spin" />
-                      <span>ENCODING TRANSMISSION...</span>
+                      <span>TRANSMITTING...</span>
                     </>
                   ) : (
                     <>
@@ -174,6 +297,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
               </button>
             </div>
           </form>
+          </>
         )}
       </div>
     </div>

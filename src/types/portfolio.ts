@@ -9,6 +9,7 @@ export interface ProjectItem {
   liveUrl?: string;
   githubUrl?: string;
   featured?: boolean;
+  image?: string;
   metrics?: {
     accuracy?: string;
     latency?: string;

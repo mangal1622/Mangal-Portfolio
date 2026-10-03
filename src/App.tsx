@@ -29,7 +29,7 @@ const App: React.FC = () => {
   const activeSection = useScrollSpy(sectionIds, 150);
 
   return (
-    <div className="relative min-h-screen bg-cyber-bg text-cyber-text overflow-x-hidden">
+    <div className="relative min-h-screen bg-cyber-bg text-cyber-text overflow-x-clip">
 
       {/* Smooth scrolling engine */}
       <SmoothScroll />

@@ -41,7 +41,7 @@ export const useScrollReveal = (
         scale: 1,
         opacity: 1,
         rotation: 0,
-        duration: options.duration ?? 1,
+        duration: options.duration ?? 0.7,
         ease: options.ease ?? 'power3.out',
       };
 
@@ -50,7 +50,7 @@ export const useScrollReveal = (
       }
 
       elements.forEach((element, index) => {
-        const delay = index * (options.stagger ?? 0.12);
+        const delay = index * (options.stagger ?? 0.06);
 
         if (options.scrub) {
           gsap.fromTo(
@@ -60,7 +60,7 @@ export const useScrollReveal = (
               ...toVars,
               scrollTrigger: {
                 trigger: element,
-                start: options.start ?? 'top 85%',
+                start: options.start ?? 'top 90%',
                 end: options.end ?? 'bottom 15%',
                 scrub: options.scrub,
               },
@@ -75,9 +75,9 @@ export const useScrollReveal = (
               delay,
               scrollTrigger: {
                 trigger: element,
-                start: options.start ?? 'top 85%',
+                start: options.start ?? 'top 90%',
                 end: options.end ?? 'bottom 15%',
-                toggleActions: options.toggleActions ?? 'play reverse play reverse',
+                toggleActions: 'play none none none',
               },
             }
           );
@@ -105,15 +105,16 @@ export const useScrollReveal = (
 
 export const useHeroParallax = (
   selector: string,
-  options: { yPercent?: number; ease?: string } = {}
+  options: { yPercent?: number; mobileYPercent?: number; ease?: string } = {}
 ) => {
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const elements = gsap.utils.toArray<HTMLElement>(selector);
+    const media = gsap.matchMedia();
+    const elements = gsap.utils.toArray<HTMLElement>(selector);
 
+    const addParallax = (yPercent: number) => {
       elements.forEach((element) => {
         gsap.to(element, {
-          yPercent: options.yPercent ?? 30,
+          yPercent,
           ease: options.ease ?? 'none',
           scrollTrigger: {
             trigger: element,
@@ -123,8 +124,15 @@ export const useHeroParallax = (
           },
         });
       });
+    };
+
+    media.add('(max-width: 767px)', () => {
+      addParallax(options.mobileYPercent ?? options.yPercent ?? 30);
+    });
+    media.add('(min-width: 768px)', () => {
+      addParallax(options.yPercent ?? 30);
     });
 
-    return () => ctx.revert();
-  }, [selector, options.yPercent, options.ease]);
+    return () => media.revert();
+  }, [selector, options.yPercent, options.mobileYPercent, options.ease]);
 };

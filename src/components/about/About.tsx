@@ -16,15 +16,15 @@ export const About: React.FC = () => {
   const [assemblyProgress, setAssemblyProgress] = useState(1);
   const { personal } = portfolioData;
 
-  // useScrollReveal('.about-reveal', {
-  //   y: 50,
-  //   duration: 1,
-  //   stagger: 0.12,
-  // });
+  useScrollReveal('.about-reveal', {
+    y: 50,
+    duration: 0.7,
+    stagger: 0.06,
+  });
 
   useScrollReveal('.about-stats', {
     y: 50,
-    duration: 1,
+    duration: 0.7,
     start: 'top 95%',
   });
 
@@ -32,8 +32,11 @@ export const About: React.FC = () => {
   useEffect(() => {
     const updateSize = () => {
       if (containerRef.current) {
-        const rawW = containerRef.current.clientWidth;
-        const w = rawW > 50 ? Math.min(rawW, 440) : 400;
+        const styles = window.getComputedStyle(containerRef.current);
+        const horizontalPadding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+        const rawW = containerRef.current.clientWidth - horizontalPadding;
+        const maxW = window.innerWidth < 768 ? 320 : 440;
+        const w = rawW > 50 ? Math.min(rawW, maxW) : 300;
         setPortraitSize({ w, h: Math.round(w * 1.22) });
       }
     };
@@ -106,12 +109,12 @@ export const About: React.FC = () => {
   };
 
   return (
-    <section id="about" className="relative py-8 lg:py-10 overflow-hidden scroll-mt-16 md:scroll-mt-20" aria-label="About section">
+    <section id="about" className="relative py-6 md:py-8 lg:py-10 overflow-hidden scroll-mt-16 md:scroll-mt-20" aria-label="About section">
       {/* Subtle section divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyber-border to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-20 items-start">
 
           {/* ── LEFT: Text Content ── */}
           <div className="space-y-8 lg:space-y-10">
@@ -170,7 +173,7 @@ export const About: React.FC = () => {
             </div>
 
             {/* Stats */}
-            <div className="about-stats pt-8 border-t border-cyber-border/80 grid grid-cols-3 gap-8">
+            <div className="about-stats pt-4 md:pt-8 border-t border-cyber-border/80 grid grid-cols-3 gap-2 sm:gap-4 md:gap-8">
               <div className="group cursor-default">
                 <div className="font-display text-3xl font-bold text-cyber-cyan glow-cyan-text group-hover:scale-105 transition-transform">
                   {personal.stats.experience}
@@ -199,10 +202,10 @@ export const About: React.FC = () => {
           </div>
 
           {/* ── RIGHT: Mangal's Dynamic Particle Portrait ── */}
-          <div className="flex flex-col items-center lg:items-end gap-4">
+          <div className="flex flex-col items-center lg:items-end gap-4 w-full">
             <div
               ref={containerRef}
-              className="relative w-full max-w-[410px] bg-cyber-bgLight/30 border border-cyber-border/60 rounded-sm overflow-hidden p-2"
+              className="relative w-full max-w-[min(100%,420px)] bg-cyber-bgLight/30 border border-cyber-border/60 rounded-sm overflow-hidden p-2 mx-auto lg:mx-0"
               style={{ minHeight: portraitSize.h }}
             >
               {/* Corner Brackets */}

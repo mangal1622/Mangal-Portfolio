@@ -10,6 +10,8 @@ interface ParticleGlobeProps {
 
 export const ParticleGlobe: React.FC<ParticleGlobeProps> = ({ mouseX = 0, mouseY = 0, scale = 1.35 }) => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+  const adjustedScale = scale * (isMobile ? 1.2 : 1);
   const sceneRef = useRef<{
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
@@ -43,8 +45,17 @@ export const ParticleGlobe: React.FC<ParticleGlobeProps> = ({ mouseX = 0, mouseY
     mountRef.current.appendChild(renderer.domElement);
 
     const worldGroup = new THREE.Group();
-    worldGroup.scale.setScalar(scale);
+    worldGroup.scale.setScalar(adjustedScale);
     scene.add(worldGroup);
+
+    const fitWorldToViewport = (width: number, height: number) => {
+      const visibleHeight = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const visibleWidth = visibleHeight * (width / height);
+      const fitScale = (Math.min(visibleWidth, visibleHeight) / (2 * 1.3)) * 0.95;
+      worldGroup.scale.setScalar(Math.min(adjustedScale, fitScale));
+    };
+
+    fitWorldToViewport(W, H);
 
     const globeGroup = new THREE.Group();
     const orbitGroup = new THREE.Group();
@@ -294,12 +305,16 @@ export const ParticleGlobe: React.FC<ParticleGlobeProps> = ({ mouseX = 0, mouseY
       camera.aspect = W2 / H2;
       camera.updateProjectionMatrix();
       renderer.setSize(W2, H2);
+      fitWorldToViewport(W2, H2);
     };
     window.addEventListener('resize', handleResize, { passive: true });
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(mountRef.current);
 
     return () => {
       cancelAnimationFrame(ref.animId);
       window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       renderer.dispose();
       if (mountRef.current && renderer.domElement.parentNode === mountRef.current) {
         mountRef.current.removeChild(renderer.domElement);

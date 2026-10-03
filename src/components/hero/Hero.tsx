@@ -12,13 +12,14 @@ export const Hero: React.FC = () => {
 
   useScrollReveal('.hero-reveal', {
     y: 60,
-    duration: 1.2,
-    stagger: 0.15,
+    duration: 0.8,
+    stagger: 0.08,
     ease: 'power3.out',
   });
 
   useHeroParallax('.hero-parallax-globe', {
     yPercent: 20,
+    mobileYPercent: 6,
   });
 
   const scrollToNext = () => {
@@ -31,14 +32,14 @@ export const Hero: React.FC = () => {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center overflow-visible pt-0"
+      className="relative min-h-[calc(100vh-4rem)] md:min-h-screen flex items-center overflow-visible pt-20 sm:pt-24 md:pt-0"
       aria-label="Hero section"
     >
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-4 items-center min-h-[75vh]">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-6 md:gap-8 lg:gap-4 items-center min-h-[50vh] md:min-h-[75vh]">
 
           {/* ── LEFT: Text Content ── */}
-        <div className="flex-1 space-y-7 lg:space-y-9">
+        <div className="flex-1 space-y-4 lg:space-y-9">
           {/* Technical badge */}
           <div className="hero-reveal flex items-center gap-3">
             <div className="w-5 h-px bg-cyber-cyan" />
@@ -79,8 +80,8 @@ export const Hero: React.FC = () => {
             </p>
           </div>
 
-          {/* Scroll indicator */}
-          <div className="hero-reveal pt-6">
+          {/* Scroll indicator - hidden on mobile */}
+          <div className="hero-reveal pt-6 hidden md:flex">
             <button
               onClick={scrollToNext}
               onMouseEnter={() => soundFX.playHover()}
@@ -100,7 +101,7 @@ export const Hero: React.FC = () => {
         </div>
 
           {/* ── RIGHT: 3D Particle Globe ── */}
-          <div className="hero-parallax-globe relative h-[420px] sm:h-[600px] lg:h-[710px] flex items-center justify-center lg:w-[120%] lg:-ml-[10%]">
+          <div className="hero-parallax-globe relative w-full max-w-[360px] sm:max-w-[420px] md:max-w-[520px] lg:max-w-none h-[400px] sm:h-[480px] md:h-[440px] lg:h-[710px] mx-auto lg:mx-0 flex items-center justify-center lg:w-[120%] lg:-ml-[10%]">
             {/* Subtle ambient glow behind globe */}
             <div
               className="hero-parallax-globe absolute inset-0 rounded-full opacity-35 blur-3xl pointer-events-none"

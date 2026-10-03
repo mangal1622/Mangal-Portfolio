@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Sparkles, Terminal } from 'lucide-react';
 import { portfolioData } from '../../data/portfolioData';
 import { soundFX } from '../../utils/soundEffects';
@@ -80,12 +80,14 @@ export const TechStack: React.FC = () => {
   const [rotationAngle, setRotationAngle] = useState(0);
   const [isRotating, setIsRotating] = useState(true);
   const [isAutoSwitching, setIsAutoSwitching] = useState(true);
+  const [orbitScale, setOrbitScale] = useState(1);
+  const orbitRef = useRef<HTMLDivElement>(null);
   const { technologies } = portfolioData;
 
   useScrollReveal('.techstack-reveal', {
     y: 50,
-    duration: 1,
-    stagger: 0.12,
+    duration: 0.7,
+    stagger: 0.06,
     ease: 'power3.out',
   });
 
@@ -124,6 +126,21 @@ export const TechStack: React.FC = () => {
   }, [orderedTechs, isAutoSwitching]);
 
   const activeTech = technologies.find(t => t.name === hoveredTech) || technologies[1];
+
+  useEffect(() => {
+    const orbit = orbitRef.current;
+    if (!orbit) return;
+
+    const updateOrbitScale = () => {
+      setOrbitScale(Math.min(1, orbit.clientWidth / 500));
+    };
+
+    const resizeObserver = new ResizeObserver(updateOrbitScale);
+    resizeObserver.observe(orbit);
+    updateOrbitScale();
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   return (
     <section id="stack" className="relative py-8 lg:py-12 overflow-hidden scroll-mt-16 md:scroll-mt-20" aria-label="Tech stack section">
@@ -207,13 +224,14 @@ export const TechStack: React.FC = () => {
 
 {/* ── RIGHT: Radial Orbital System Matching Panel 05 ── */}
            <div 
-             className="techstack-reveal relative flex items-center justify-center min-h-[460px] sm:min-h-[520px]"
+             ref={orbitRef}
+             className="techstack-reveal relative flex items-center justify-center w-full min-h-[320px] sm:min-h-[420px] md:min-h-[520px] overflow-hidden"
              onMouseEnter={() => { setIsRotating(false); setIsAutoSwitching(false); }}
              onMouseLeave={() => { setIsRotating(true); setIsAutoSwitching(true); }}
            >
             {/* Ambient Cyan Halo */}
             <div
-              className="absolute w-[440px] h-[440px] rounded-full opacity-20 blur-3xl pointer-events-none"
+              className="absolute w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] md:w-[440px] md:h-[440px] rounded-full opacity-20 blur-3xl pointer-events-none"
               style={{ background: 'radial-gradient(circle, rgba(0,240,255,0.35) 0%, transparent 70%)' }}
             />
 
@@ -240,7 +258,7 @@ export const TechStack: React.FC = () => {
                 const total = orderedTechs.length;
                 const angleDeg = (idx * (360 / total) + rotationAngle) % 360;
                 const angleRad = (angleDeg * Math.PI) / 180;
-                const radius = 145;
+                const radius = 145 * orbitScale;
                 const tx = 250 + Math.cos(angleRad) * radius;
                 const ty = 250 + Math.sin(angleRad) * radius;
                 const isHovered = hoveredTech === tech.name;
@@ -278,7 +296,7 @@ export const TechStack: React.FC = () => {
                 const total = orderedTechs.length;
                 const angleDeg = (idx * (360 / total) + rotationAngle) % 360;
                 const angleRad = (angleDeg * Math.PI) / 180;
-                const radius = 175;
+                const radius = 175 * orbitScale;
                 const tx = Math.cos(angleRad) * radius;
                 const ty = Math.sin(angleRad) * radius;
                 const isHovered = hoveredTech === tech.name;
@@ -302,7 +320,7 @@ export const TechStack: React.FC = () => {
                         setHoveredTech(tech.name);
                       }}
                       aria-label={`Inspect ${tech.name}`}
-                      className={`w-13 h-13 p-2.5 rounded-full border flex items-center justify-center transition-all duration-300 cursor-pointer ${
+                      className={`w-12 h-12 sm:w-[3.25rem] sm:h-[3.25rem] p-2.5 rounded-full border flex items-center justify-center transition-all duration-300 cursor-pointer ${
                         isHovered
                           ? 'border-cyber-cyan bg-cyber-cyan/20 scale-125 shadow-cyan-md'
                           : 'border-cyber-border bg-cyber-bgLight/90 hover:border-cyber-cyan/70 hover:scale-110'

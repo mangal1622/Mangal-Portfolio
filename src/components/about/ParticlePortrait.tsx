@@ -53,9 +53,11 @@ export const ParticlePortrait: React.FC<ParticlePortraitProps> = ({
     if (!ctx) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    ctx.scale(dpr, dpr);
+    canvas.width = Math.max(1, Math.round(width * dpr));
+    canvas.height = Math.max(1, Math.round(height * dpr));
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const render = () => {
       timeRef.current += 1;

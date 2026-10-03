@@ -36,6 +36,7 @@ export const portfolioData: PortfolioData = {
       liveUrl: "https://crop-health-ai.example.com",
       githubUrl: "https://github.com/mangal1622/AgroMitR",
       featured: true,
+      image: "/images/agromitr-logo.png",
       metrics: {
         accuracy: "98.4%",
         latency: "140ms",
@@ -83,6 +84,7 @@ export const portfolioData: PortfolioData = {
       liveUrl: "https://weatherpro.example.com",
       githubUrl: "https://github.com/mangal1622/WeatherPro",
       featured: true,
+      image: "/images/weatherpro-logo.png",
       metrics: {
         users: "45k+",
         stars: "1.2k"
@@ -98,7 +100,8 @@ export const portfolioData: PortfolioData = {
       description: "An experimental sci-fi digital interface portfolio utilizing WebGL particle systems, real-time image pixel synthesis, and cinematic sound design.",
       liveUrl: "https://mangal.dev",
       githubUrl: "https://github.com/mangal/portfolio-3.0",
-      featured: true
+      featured: true,
+      image: "/images/portfolio-logo.png"
     },
     {
       id: "ai-resume-parser",
@@ -111,6 +114,7 @@ export const portfolioData: PortfolioData = {
       liveUrl: "https://resume-ai.example.com",
       githubUrl: "https://github.com/mangal/ai-resume-parser",
       featured: true,
+      image: "/images/resume-parser-logo.png",
       metrics: {
         accuracy: "96.1%",
         latency: "320ms"
@@ -124,7 +128,8 @@ export const portfolioData: PortfolioData = {
       category: "Autonomous Systems",
       tags: ["PYTORCH", "CUDA", "ROBOTICS", "DOCKER"],
       description: "Edge-computed real-time anomaly detection system for autonomous aerial vehicles and industrial robotics telemetry.",
-      featured: false
+      featured: false,
+      image: "/images/neural-sentinel-logo.png"
     }
   ],
   technologies: [
