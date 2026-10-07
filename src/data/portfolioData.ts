@@ -33,7 +33,7 @@ export const portfolioData: PortfolioData = {
       category: "AI & Computer Vision",
       tags: ["AI", "COMPUTER VISION", "FASTAPI", "REACT"],
       description: "An AI-powered system to detect plant diseases from leaf images, helping farmers take faster and smarter decisions with 98.4% diagnostic accuracy.",
-      liveUrl: "https://crop-health-ai.example.com",
+      liveUrl: "https://agromitr.vercel.app/",
       githubUrl: "https://github.com/mangal1622/AgroMitR",
       featured: true,
       image: "/images/agromitr-logo.png",
