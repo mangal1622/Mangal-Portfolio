@@ -81,7 +81,7 @@ export const portfolioData: PortfolioData = {
       category: "Full Stack & EdTech",
       tags: ["REACT", "NODE.JS", "EXPRESS", "MONGODB", "TAILWIND"],
       description: "A comprehensive educational marketplace connecting instructors with students worldwide, featuring interactive course players and payments.",
-      liveUrl: "https://weather-8gc0yykpx-mangal-pandeys-projects.vercel.app",
+      liveUrl: "https://weather-pro-tau.vercel.app",
       githubUrl: "https://github.com/mangal1622/WeatherPro",
       featured: true,
       image: "/images/weatherpro-logo.png",
