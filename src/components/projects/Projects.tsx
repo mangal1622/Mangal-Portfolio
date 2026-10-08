@@ -168,6 +168,11 @@ export const Projects: React.FC = () => {
                       </span>
                     ))}
                   </div>
+
+                  {/* Description */}
+                  <p className="font-mono text-[11px] leading-relaxed text-cyber-textMuted min-h-[2.5rem]">
+                    {selected.description}
+                  </p>
                 </div>
 
                 {/* Action Buttons */}

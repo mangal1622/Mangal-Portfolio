@@ -101,7 +101,9 @@ export const Contact: React.FC<ContactProps> = ({ onOpenModal }) => {
               </button>
 
               <a
-                href="#"
+                href="/Mangal-Pandey-Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => soundFX.playClick()}
                 onMouseEnter={() => soundFX.playHover()}
                 className="flex items-center gap-3 px-6 py-3.5 border border-cyber-border hover:border-cyber-cyan/70 text-cyber-textMuted hover:text-white text-xs font-mono tracking-widest uppercase transition-all cursor-pointer group"

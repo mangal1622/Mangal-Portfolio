@@ -94,7 +94,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onOpenContact }) 
               }}
             />
           </div>
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-pulse flex-shrink-0" />
         </a>
 
 
