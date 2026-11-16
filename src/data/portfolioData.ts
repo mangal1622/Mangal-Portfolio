@@ -229,7 +229,7 @@ export const portfolioData: PortfolioData = {
     },
   ],
   socials: {
-    email: "mangalpandey2305@example.com",
+    email: "mangalpandey2305@gmail.com",
     linkedin: "https://linkedin.com/in/mangal-pandey-66a2293a5",
     github: "https://github.com/mangal1622",
     location: "India"
